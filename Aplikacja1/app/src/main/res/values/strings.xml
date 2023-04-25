@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Aplikacja1</string>
+    <string name="nameText">Imię:</string>
+    <string name="nameHint">Wprowadź imię</string>
+    <string name="surnameText">Nazwiso:</string>
+    <string name="surnameHint">Wprowadź nazwisko</string>
+    <string name="gradeCountText">Liczba ocen:</string>
+    <string name="gradeCountHint">Wpisz liczbę ocen (5–15)</string>
+    <string name="gradesButton">Oceny</string>
+    <string name="nameError">Błędne imię!</string>
+    <string name="surnameError">Błędne nazwisko!</string>
+    <string name="gradeCountError">Błędna liczba ocen!</string>
+    <string name="mean">Średnia: </string>
+    <string name="badGrade">Tym razem mi nie poszło</string>
+    <string name="goodGrade">Super :)</string>
+    <string name="succesAnnouncement">Gratulacje! Otrzymujesz zaliczenie!</string>
+    <string name="failAnnouncement">Wysyłam podanie o zaliczenie warunkowe</string>
+    <string-array name="subjects">
+        <item>Angielski</item>
+        <item>C++ Obiektowo</item>
+        <item>Podstawy Java</item>
+        <item>Sieci rozproszone</item>
+        <item>Integracja systemów</item>
+        <item>Szkielety programistyczne</item>
+        <item>Bezpieczeństwo informacji</item>
+        <item>Podstawy grafiki</item>
+        <item>Mikroprocesory</item>
+        <item>Technika cyfrowa</item>
+        <item>Aplikacje internetowe</item>
+        <item>Algorytmika</item>
+        <item>Fizyka</item>
+        <item>Systemy operacyjne</item>
+        <item>Sieci komputerowe</item>
+    </string-array>
+</resources>
