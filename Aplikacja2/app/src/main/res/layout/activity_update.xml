@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:shrinkColumns="*"
+    android:stretchColumns="2">
+
+    <TableRow
+        android:id="@+id/wiersz1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="15dp">
+
+        <TextView
+            android:id="@+id/etykieta1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/manufacturer_label">
+        </TextView>
+
+        <EditText
+            android:id="@+id/manufacturer"
+            android:layout_span="2"
+            android:layout_marginEnd="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:text=""
+            android:hint="@string/manufacturer_hint"
+            android:importantForAutofill="no">
+        </EditText>
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/wiersz2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="15dp">
+
+        <TextView
+            android:id="@+id/etykieta2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/model_label">
+        </TextView>
+
+        <EditText
+            android:id="@+id/model"
+            android:layout_span="2"
+            android:layout_marginEnd="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:text=""
+            android:hint="@string/model_hint"
+            android:importantForAutofill="no">
+        </EditText>
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/wiersz3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="15dp">
+
+        <TextView
+            android:id="@+id/etykieta3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/version_label">
+        </TextView>
+
+        <EditText
+            android:id="@+id/version"
+            android:layout_span="2"
+            android:layout_marginEnd="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:text=""
+            android:hint="@string/version_hint"
+            android:importantForAutofill="no">
+        </EditText>
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/wiersz4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="15dp"
+        android:paddingBottom="10dp">
+
+        <TextView
+            android:id="@+id/etykieta4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/website_label">
+        </TextView>
+
+        <EditText
+            android:id="@+id/website"
+            android:layout_span="2"
+            android:layout_marginEnd="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:text=""
+            android:hint="@string/website_hint"
+            android:importantForAutofill="no">
+        </EditText>
+    </TableRow>
+
+    <TableRow android:id="@+id/wiersz5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="15dp">
+
+        <Button
+            android:id="@+id/websiteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            style="?android:attr/button"
+            android:text="@string/website_button"/>
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            style="?android:attr/button"
+            android:text="@string/cancel_button"/>
+
+        <Button
+            android:id="@+id/updateButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="30dp"
+            style="?android:attr/button"
+            android:text="@string/update_button" />
+    </TableRow>
+</TableLayout>

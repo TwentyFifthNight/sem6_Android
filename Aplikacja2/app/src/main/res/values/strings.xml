@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Aplikacja2</string>
+    <string name="FAB_text">Add Phone</string>
+    <string name="title_activity_insert">InsertActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="record_added">Pomyślne dodanie rekordu</string>
+    <string name="invalid_data">Błędne dane!</string>
+    <string name="invalid_version">Błędna wersja!</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="save_button">Save</string>
+    <string name="website_button">Web site</string>
+    <string name="website_label">Web site</string>
+    <string name="version_label">Android version</string>
+    <string name="model_label">Model</string>
+    <string name="manufacturer_label">Manufacturer</string>
+    <string name="update_button">Update</string>
+    <string name="title_activity_update">UpdateActivity</string>
+    <string name="empty_website">Brak adresu!</string>
+    <string name="invalid_website">Błędny adres!</string>
+    <string name="manufacturer_hint">Podaj producenta</string>
+    <string name="model_hint">Podaj model</string>
+    <string name="version_hint">Podaj wersję</string>
+    <string name="website_hint">Podaj stronę</string>
+    <string name="clear_all_menu_item">Clear all data</string>
+</resources>
