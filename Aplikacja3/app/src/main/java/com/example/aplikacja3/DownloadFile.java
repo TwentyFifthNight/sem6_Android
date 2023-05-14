@@ -13,6 +13,8 @@ import android.os.Environment;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -32,24 +34,30 @@ public class DownloadFile extends IntentService {
     private static final String CHANNEL_ID = "com.example.aplikacja3.channel.1";
 
     private static final int NOTIFICATION_ID = 1;
+
+    public static final String NOTIFICATION = "com.example.aplikacja3.DownloadFile.NOTIFICATION";
     private NotificationManager mNotificationManager;
 
     private long mDownloadedBytes = 0;
 
     private long mTotalSize = 0;
 
-    int BUFFER_SIZE = 32*10^3;
+    int BUFFER_SIZE = 8192;
 
 
     public DownloadFile() {
         super("DownloadFile");
     }
 
+
+    private static Intent startIntent;
     public static void startService(Context context, String parameter){
-        Intent intent = new Intent(context, DownloadFile.class);
-        intent.setAction(DOWNLOAD_FILE);
-        intent.putExtra(URLParameter,parameter);
-        context.startService(intent);
+        if(startIntent == null) {
+            startIntent = new Intent(context, DownloadFile.class);
+            startIntent.setAction(DOWNLOAD_FILE);
+            startIntent.putExtra(URLParameter, parameter);
+            context.startService(startIntent);
+        }
     }
 
     @Override
@@ -65,10 +73,10 @@ public class DownloadFile extends IntentService {
                 //execute task
                 download(url);
             } else {
-                Log.e("intent_service","nieznana akcja");
+                Log.e("download","undefined action");
             }
         }
-        Log.d("intent_service","usługa wykonała zadanie");
+        Log.d("download","Service Task done");
     }
 
     private void download(String urlParam) {
@@ -78,19 +86,24 @@ public class DownloadFile extends IntentService {
 
         try {
             URL url = new URL(urlParam);
-            File workingFile = new File(url.getFile());
-            File outputFile = new File(Environment.getExternalStorageDirectory() +
-                    File.separator + workingFile.getName());
-            if(outputFile.exists()){
-                outputFile.delete();
-            }
-
 
             connection = (HttpsURLConnection) url.openConnection();
             reader = new DataInputStream(connection.getInputStream());
-            fileOutputStream = new FileOutputStream(outputFile.getPath());
-
             mTotalSize = connection.getContentLength();
+            if(mTotalSize == -1){
+                sendBroadcast();
+                return;
+            }
+
+            File workingFile = new File(url.getFile());
+            File outputFile = new File(Environment
+                    .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) +
+                    File.separator + workingFile.getName());
+            if(outputFile.exists()){
+                if(outputFile.delete())
+                    Log.d("download", "File deleted");
+            }
+            fileOutputStream = new FileOutputStream(outputFile.getPath());
 
             byte[] buffer = new byte[BUFFER_SIZE];
             int downloaded = reader.read(buffer,0,BUFFER_SIZE);
@@ -98,6 +111,7 @@ public class DownloadFile extends IntentService {
                 fileOutputStream.write(buffer, 0, downloaded);
                 mDownloadedBytes += downloaded;
                 mNotificationManager.notify(NOTIFICATION_ID,createNotification());
+                sendBroadcast();
                 downloaded = reader.read(buffer, 0, BUFFER_SIZE);
             }
 
@@ -119,6 +133,7 @@ public class DownloadFile extends IntentService {
                     e.printStackTrace();
                 }
             }
+            startIntent = null;
         }
     }
 
@@ -139,6 +154,9 @@ public class DownloadFile extends IntentService {
         Intent notificationIntent = new Intent(this, MainActivity.class);
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+
+        //Test
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
         stackBuilder.addParentStack(MainActivity.class);
         stackBuilder.addNextIntent(notificationIntent);
@@ -165,6 +183,16 @@ public class DownloadFile extends IntentService {
     private int progressValue(){
         if(mTotalSize == 0 || mDownloadedBytes == 0)
             return 0;
-        return (int)((mDownloadedBytes * 1.0 / mTotalSize) * 100);
+        return (int)(((double)mDownloadedBytes / mTotalSize) * 100);
+    }
+
+
+    public static final String downloadedBytes = "com.example.aplikacja3.broadcast.downloaded";
+    public static final String totalBytes = "com.example.aplikacja3.broadcast.total";
+    private void sendBroadcast(){
+        Intent intent = new Intent(NOTIFICATION);
+        intent.putExtra(downloadedBytes , mDownloadedBytes);
+        intent.putExtra(totalBytes, mTotalSize);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 }

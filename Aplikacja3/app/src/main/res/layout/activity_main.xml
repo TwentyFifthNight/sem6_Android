@@ -14,9 +14,9 @@
         android:text="@string/address_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBaseline_toBaselineOf="@id/address"
-        android:paddingEnd="5dp"/>
+        android:paddingEnd="5dp" />
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/address"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -26,7 +26,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/addressLabel"
         app:layout_constraintTop_toTopOf="parent"
-        android:importantForAutofill="no"/>
+        android:importantForAutofill="no"
+        android:autoLink=""/>
 
     <Button
         android:id="@+id/downloadInfoButton"
@@ -72,7 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="0"
+        android:text=""
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="@+id/size"
         app:layout_constraintStart_toStartOf="@+id/size"
@@ -93,12 +94,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/bytes_download_label"
-        app:layout_constraintBottom_toBottomOf="@+id/downloadBytes"
+        app:layout_constraintBottom_toBottomOf="@+id/downloadedBytes"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/downloadBytes" />
+        app:layout_constraintTop_toTopOf="@+id/downloadedBytes" />
 
     <TextView
-        android:id="@+id/downloadBytes"
+        android:id="@+id/downloadedBytes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -116,6 +117,6 @@
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/downloadBytes" />
+        app:layout_constraintTop_toBottomOf="@+id/downloadedBytes" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

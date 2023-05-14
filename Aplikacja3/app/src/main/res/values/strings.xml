@@ -5,10 +5,14 @@
     <string name="file_size_label">Rozmiar pliku</string>
     <string name="file_type_label">Typ pliku</string>
     <string name="download_file_button">Pobierz plik</string>
-    <string name="bytes_download_label">Pobrano bajtów:</string>
+    <string name="bytes_download_label">Pobrano:</string>
     <string name="address_label">Adres:</string>
     <string name="empty_address">Brak adresu</string>
     <string name="invalid_address">Adres nie wskazuje na plik</string>
     <string name="download_notification">Pobieranie pliku</string>
     <string name="no_permissions">Brak uprawnień</string>
+    <string-array name="autocompleteAddress">
+        <item>https://cdn.kernel.org/pub/linux/kernel/v5.x/patch-5.1.xz</item>\
+        <item>https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.4.36.tar.xz</item>
+    </string-array>
 </resources>
