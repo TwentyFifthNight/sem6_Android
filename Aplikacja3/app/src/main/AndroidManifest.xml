@@ -25,7 +25,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name="com.example.aplikacja3.DownloadFile"
+        <service android:name="com.example.aplikacja3.DownloadServie.DownloadFileService"
             android:exported="false"/>
     </application>
 

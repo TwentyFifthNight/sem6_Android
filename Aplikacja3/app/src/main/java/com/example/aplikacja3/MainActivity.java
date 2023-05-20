@@ -16,15 +16,19 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.aplikacja3.DownloadInfoTask.AsyncResponse;
+import com.example.aplikacja3.DownloadInfoTask.DownloadInfoTask;
+import com.example.aplikacja3.DownloadInfoTask.InfoWrapper;
+import com.example.aplikacja3.DownloadServie.DownloadFileService;
+
 import java.util.Locale;
 
 
-public class MainActivity extends AppCompatActivity implements AsyncResponse{
+public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
     AutoCompleteTextView address;
 
@@ -37,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse{
         address = findViewById(R.id.address);
 
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,
+                new ArrayAdapter<>(this,android.R.layout.simple_dropdown_item_1line,
                         getResources().getStringArray(R.array.autocompleteAddress));
         address.setAdapter(adapter);
 
@@ -68,25 +72,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse{
         outState.putString(downloadedState,downloadedSize.getText().toString());
     }
 
-    @Override
-    public void onRequestPermissionsResult(int taskCode, @NonNull String[] permissions, @NonNull int[] decisions) {
-        super.onRequestPermissionsResult(taskCode, permissions, decisions);
-        switch (taskCode) {
-            case KOD_WRITE_EXTERNAL_STORAGE:
-                if (permissions .length > 0 && permissions[0].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        && decisions[0] == PackageManager.PERMISSION_GRANTED) {
-                    DownloadFile.startService(this,address.getText().toString());
-                }
-                else {
-                    Toast.makeText(this, getString(R.string.no_permissions), Toast.LENGTH_LONG).show();
-                }
-                break;
-            default:
-                break;
-        }
-    }
-
-
     private void Listeners(){
         Button infoButton = findViewById(R.id.downloadInfoButton);
 
@@ -94,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse{
             if(address.getText().toString().equals("")){
                 Toast.makeText(this, getText(R.string.empty_address),Toast.LENGTH_LONG).show();
             }else{
-                DownloadInfo task = new DownloadInfo(this);
+                DownloadInfoTask task = new DownloadInfoTask(this);
                 task.execute(address.getText().toString());
             }
         });
@@ -109,19 +94,28 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse{
                 if(ActivityCompat.checkSelfPermission(this,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
                         PackageManager.PERMISSION_GRANTED){
-                    Log.d("Main","Perm OK");
-
-                    DownloadFile.startService(this,address.getText().toString());
+                    Log.d("Main - downloadButton","Perm OK");
+                    DownloadFileService.startService(this,address.getText().toString());
                 }else{
-                    Log.d("Main","Perm Not ok");
-                    //if(!ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.WRITE_EXTERNAL_STORAGE)){
-                    Log.d("Main","Show Request");
+                    Log.d("Main - downloadButton","Perm Not ok");
                     ActivityCompat.requestPermissions(this, new String[] {
                             Manifest.permission.WRITE_EXTERNAL_STORAGE},KOD_WRITE_EXTERNAL_STORAGE);
-                    //}
                 }
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int taskCode, @NonNull String[] permissions, @NonNull int[] decisions) {
+        super.onRequestPermissionsResult(taskCode, permissions, decisions);
+        if (taskCode == KOD_WRITE_EXTERNAL_STORAGE) {
+            if (permissions.length > 0 && permissions[0].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    && decisions[0] == PackageManager.PERMISSION_GRANTED) {
+                DownloadFileService.startService(this, address.getText().toString());
+            } else {
+                Toast.makeText(this, getString(R.string.no_permissions), Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     @Override
@@ -143,8 +137,8 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse{
         @Override
         public void onReceive(Context context, Intent intent) {
             Bundle bundle = intent.getExtras();
-            long downloadedBytes = bundle.getLong(DownloadFile.downloadedBytes);
-            long totalSize = bundle.getLong(DownloadFile.totalBytes);
+            long downloadedBytes = bundle.getLong(DownloadFileService.downloadedBytes);
+            long totalSize = bundle.getLong(DownloadFileService.totalBytes);
             if(totalSize == -1){
                 Toast.makeText(MainActivity.this,getText(R.string.invalid_address),Toast.LENGTH_LONG).show();
                 address.setError(getText(R.string.invalid_address));
@@ -167,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse{
     @Override
     protected void onResume() {
         super.onResume();
-        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter(DownloadFile.NOTIFICATION));
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter(DownloadFileService.NOTIFICATION));
     }
 
     private String formatSize(long size){

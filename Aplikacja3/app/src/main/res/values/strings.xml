@@ -8,7 +8,7 @@
     <string name="bytes_download_label">Pobrano:</string>
     <string name="address_label">Adres:</string>
     <string name="empty_address">Brak adresu</string>
-    <string name="invalid_address">Adres nie wskazuje na plik</string>
+    <string name="invalid_address">Błąd przy próbie pobrania informacji</string>
     <string name="download_notification">Pobieranie pliku</string>
     <string name="no_permissions">Brak uprawnień</string>
     <string-array name="autocompleteAddress">
