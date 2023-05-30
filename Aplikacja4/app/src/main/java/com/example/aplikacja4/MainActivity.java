@@ -10,11 +10,13 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -123,18 +125,21 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int taskCode, @NonNull String[] permissions, @NonNull int[] decisions) {
         super.onRequestPermissionsResult(taskCode, permissions, decisions);
         if (taskCode == WRITE_CODE) {
-            if (permissions.length > 0 && permissions[0].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            if (permissions.length > 0 && permissions[0]
+                    .equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     && decisions[0] == PackageManager.PERMISSION_GRANTED) {
                 saveImage();
             } else {
-                Toast.makeText(this, "Brak uprawnień do zapisywania", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Brak uprawnień do zapisywania",
+                        Toast.LENGTH_LONG).show();
             }
         } else if (taskCode == READ_CODE) {
             if (permissions.length > 0 && permissions[0].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     && decisions[0] == PackageManager.PERMISSION_GRANTED) {
                 browseImages();
             } else {
-                Toast.makeText(this, "Brak uprawnień do przeglądania plików", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Brak uprawnień do przeglądania plików",
+                        Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -155,7 +160,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         ContentValues imageDetails = new ContentValues();
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.ENGLISH).format(new Date());
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.ENGLISH)
+                .format(new Date());
         String fileName = "IMG_" + timeStamp + ".png";
         imageDetails.put(MediaStore.Images.Media.DISPLAY_NAME, fileName);
 
@@ -172,8 +178,34 @@ public class MainActivity extends AppCompatActivity {
                      resolver.openFileDescriptor(imageUri, "w", null);
              FileOutputStream fos = new FileOutputStream(pfd.getFileDescriptor())) {
             //synchronizacja na tym samym obiekcie co w powierzchni rysunku
+
             synchronized (mDrawingSurface) {
-                mDrawingSurface.getBitmap().compress(Bitmap.CompressFormat.PNG, 100, fos);
+                DisplayMetrics metrics = this.getResources().getDisplayMetrics();
+                int deviceWidth;
+                int deviceHeight;
+                int height = metrics.heightPixels;
+                int width = metrics.widthPixels;
+                if(width < height){
+                    deviceWidth  = width;
+                    deviceHeight = height;
+                }else{
+                    deviceWidth  = height;
+                    deviceHeight = width;
+                }
+
+                int lastRotation = DrawingSurface.getLastRotation();
+
+                Bitmap bitmap = mDrawingSurface.getBitmap();
+                if(lastRotation != 0) {
+                    lastRotation = (-1) * lastRotation;
+                    Matrix matrix = new Matrix();
+                    matrix.postRotate(lastRotation);
+                    bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
+                            bitmap.getHeight(), matrix, true);
+                }
+
+                Bitmap.createScaledBitmap(bitmap,deviceWidth,deviceHeight,false)
+                        .compress(Bitmap.CompressFormat.PNG, 100, fos);
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -58,7 +58,7 @@ public class FragmentList extends Fragment{
                     MediaStore.Images.Media.OWNER_PACKAGE_NAME
             };
             selection = MediaStore.Images.Media.OWNER_PACKAGE_NAME + " = ?";
-            selectionArgs = new String[]{getContext().getPackageName()};
+            selectionArgs = new String[]{requireContext().getPackageName()};
             //na Androidzie 9- nie ma informacji o właścicielu
         } else {
             collection = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
@@ -70,7 +70,7 @@ public class FragmentList extends Fragment{
             selectionArgs = null;
         }
         String sortOrder = MediaStore.Images.Media.DISPLAY_NAME + " ASC";
-        try (Cursor cursor = getContext().getContentResolver().query(
+        try (Cursor cursor = requireContext().getContentResolver().query(
                 collection,
                 projection,
                 selection,
