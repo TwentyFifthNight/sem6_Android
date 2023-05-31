@@ -36,7 +36,7 @@ public class DrawingSurface extends SurfaceView implements SurfaceHolder.Callbac
         mHolder.addCallback(this);
         mPath = new Path();
         mPaint = new Paint();
-        mPaint.setColor(Color.RED);
+        mPaint.setColor(0xFFCC0000);
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeWidth(10);
         setFocusable(true);
@@ -182,14 +182,15 @@ public class DrawingSurface extends SurfaceView implements SurfaceHolder.Callbac
         if(lastRotation == angle)
             return;
 
-        rotation = (-1) * lastRotation + angle;
-        lastRotation = angle;
-        Matrix matrix = new Matrix();
-        matrix.postRotate(rotation);
-        bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-        bitmap = Bitmap.createScaledBitmap(bitmap,width,height,false);
-        mCanvas = new Canvas(bitmap);
-
+        synchronized (mLock) {
+            rotation = (-1) * lastRotation + angle;
+            lastRotation = angle;
+            Matrix matrix = new Matrix();
+            matrix.postRotate(rotation);
+            bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+            bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
+            mCanvas = new Canvas(bitmap);
+        }
     }
 
     @Override

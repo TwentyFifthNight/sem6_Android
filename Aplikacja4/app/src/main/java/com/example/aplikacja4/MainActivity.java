@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
                     && decisions[0] == PackageManager.PERMISSION_GRANTED) {
                 saveImage();
             } else {
-                Toast.makeText(this, "Brak uprawnień do zapisywania",
+                Toast.makeText(this, getString(R.string.no_save_permissons),
                         Toast.LENGTH_LONG).show();
             }
         } else if (taskCode == READ_CODE) {
@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
                     && decisions[0] == PackageManager.PERMISSION_GRANTED) {
                 browseImages();
             } else {
-                Toast.makeText(this, "Brak uprawnień do przeglądania plików",
+                Toast.makeText(this, getString(R.string.no_browse_permissons),
                         Toast.LENGTH_LONG).show();
             }
         }
